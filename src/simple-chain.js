@@ -1,25 +1,37 @@
-const CustomError = require("../extensions/custom-error");
-
 const chainMaker = {
-  getLength() {    
-    return chainMaker = chainMaker.length;
-  },
-  addLink(value) {
-    chainMaker = chainMaker.push(value);
-    
-  },
-  removeLink(position) {
-    chainMaker = chainMaker.splice(position-1, 1);
-  },
-  reverseChain() {
-    chainMaker = chainMaker.reverse();
-  },
-  finishChain() {
-    for (i = 0; i < chainMaker.length; i++) {
-      chainMaker[i] = "'(' + chainMaker[i] + ')'"; 
+    chainsArr: [],
+    getLength() {
+        return this.chainsArr.length; 
+    },
+    addLink(value) 
+    {
+        this.chainsArr.push(String(value));
+        return this;
+    },
+    removeLink(position) 
+    {
+        if(typeof(position) != 'number'     ||
+           position <= 0                    ||
+           position > this.chainsArr.length ||
+           Math.trunc(position) != position) 
+        {
+            this.chainsArr = [];
+            throw new Error("Uncorrect type of number!");
+        }
+        this.chainsArr.splice(position - 1, 1);
+        return this;
+    },
+    reverseChain() 
+    {
+        this.chainsArr.reverse();
+        return this;
+    },
+    finishChain() 
+    {
+        let chain_string = "( " + this.chainsArr.join(" )~~( ") + " )";     
+        this.chainsArr = [];
+        return chain_string;
     }
-    chainMaker = chainMaker.join("~~");
-  }
 };
 
 module.exports = chainMaker;
